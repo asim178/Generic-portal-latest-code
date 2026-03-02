@@ -26,4 +26,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: your-dockerhub-username/your-image-name:latest
+          tags: asim12344321/generic-portal-latest-code:latest
