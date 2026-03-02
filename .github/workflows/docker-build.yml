@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,9 +22,15 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      # (Optional but recommended for first run)
+      - name: Verify Dockerfile location
+        run: |
+          ls Generic-portal-latest-code/project/backend
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./Generic-portal-latest-code/project/backend
+          file: ./Generic-portal-latest-code/project/backend/Dockerfile
           push: true
           tags: asim12344321/generic-portal-latest-code:latest
