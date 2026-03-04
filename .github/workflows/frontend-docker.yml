@@ -1,0 +1,46 @@
+name: Build & Push Frontend Docker Image
+
+# Trigger this workflow on push to main branch (or change to your branch)
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout your repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Setup Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # 3️⃣ Install dependencies and build frontend
+      - name: Build frontend
+        working-directory: ./project   # <-- path to your frontend folder (where package.json is)
+        run: |
+          npm install
+          npm run build
+
+      # 4️⃣ Login to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      # 5️⃣ Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build -f ./project/Dockerfile.frontend -t yourdockerhubusername/generic-portal-frontend:latest ./project
+
+      # 6️⃣ Push Docker image to Docker Hub
+      - name: Push Docker image
+        run: |
+          docker push yourdockerhubusername/generic-portal-frontend:latest
