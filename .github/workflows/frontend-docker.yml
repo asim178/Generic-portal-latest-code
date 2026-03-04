@@ -1,6 +1,6 @@
 name: Build & Push Frontend Docker Image
 
-# Trigger this workflow on push to main branch (or change to your branch)
+# Trigger workflow on push to main branch
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout your repository
+      # 1️⃣ Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -23,9 +23,9 @@ jobs:
 
       # 3️⃣ Install dependencies and build frontend
       - name: Build frontend
-        working-directory: ./project   # <-- path to your frontend folder (where package.json is)
+        working-directory: ./project   # <-- path to your frontend folder
         run: |
-          npm install
+          npm ci
           npm run build
 
       # 4️⃣ Login to Docker Hub
@@ -38,7 +38,10 @@ jobs:
       # 5️⃣ Build Docker image
       - name: Build Docker image
         run: |
-          docker build -f ./project/Dockerfile.frontend -t asim12344321/generic-portal-frontend:latest ./project
+          docker build \
+            -f ./project/Dockerfile.frontend \
+            -t asim12344321/generic-portal-frontend:latest \
+            ./project
 
       # 6️⃣ Push Docker image to Docker Hub
       - name: Push Docker image
