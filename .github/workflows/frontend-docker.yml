@@ -35,15 +35,15 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      # 5️⃣ Build Docker image
+      # 5️⃣ Build Docker image (frontend)
       - name: Build Docker image
         run: |
           docker build \
-            -f ./project/Dockerfile.frontend \
+            -f ./project/Dockerfile.frontend \   # explicitly use frontend Dockerfile
             -t asim12344321/generic-portal-frontend:latest \
             ./project
 
-      # 6️⃣ Push Docker image to Docker Hub
+      # 6️⃣ Push Docker image to Docker Hub (frontend)
       - name: Push Docker image
         run: |
           docker push asim12344321/generic-portal-frontend:latest
